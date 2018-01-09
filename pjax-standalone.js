@@ -173,7 +173,10 @@
 			// Don't fire normal event
 			if(event.preventDefault){ event.preventDefault(); }else{ event.returnValue = false; }
 			// Take no action if we are already on said page?
-			if(document.location.href === options.url) return false;
+			if(document.location.href === options.url) {
+				internal.triggerEvent(options.container,'pjax_load_blocked', options);
+				return false;
+			}
 			// handle the load.
 			internal.handle(options);
 		});
@@ -464,7 +467,7 @@
 		options.container = internal.get_container_node(options.container);
 
 		// Events
-		var events = ['ready', 'pjax_load_requested', 'pjax_load_ended', 'pjax_load_failed', 'pjax_load_success'];
+		var events = ['ready', 'pjax_load_requested', 'pjax_load_ended', 'pjax_load_failed', 'pjax_load_success', 'pjax_load_blocked'];
 
 		// If everything went okay thus far, connect up listeners
 		for(var e in events){
